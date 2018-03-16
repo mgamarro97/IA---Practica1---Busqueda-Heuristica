@@ -1,59 +1,26 @@
-import aima.search.framework.GraphSearch;
-import aima.search.framework.Problem;
-import aima.search.framework.Search;
-import aima.search.framework.SearchAgent;
-import aima.search.informed.AStarSearch;
-import aima.search.informed.IterativeDeepeningAStarSearch;
 import IA.Desastres.*;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Scanner init = new Scanner(System.in);
-        int[] prob = new int[5];
-        int[] sol = new int[5];
-        for (int i = 0; i < 5; ++i) {
-            prob[i] = init.nextInt();
+        Grupos grupos = new Grupos(10, 1234);
+        Centros centros = new Centros(5, 10, 1234);
+
+        DesastresBoard board = new DesastresBoard(grupos, centros);
+
+        System.out.println("Grupos:");
+        for (int i = 0; i < grupos.size(); ++i) {
+            System.out.println(board.getGrupo(i).getCoordX() + " " + board.getGrupo(i).getCoordY() + " " + board.getGrupo(i).getPrioridad() + " " +  board.getGrupo(i).getNPersonas());
         }
-        Scanner solu = new Scanner(System.in);
-        for (int i = 0; i < 5; ++i) {
-            sol[i] = solu.nextInt();
+        System.out.println();
+        System.out.println("Centors:");
+        for (int i = 0; i < centros.size(); ++i) {
+            System.out.println(board.getCentro(i).getCoordX() + " " +  board.getCentro(i).getCoordY() + " " + board.getCentro(i).getNHelicopteros());
         }
-
-        DesastresBoard board = new DesastresBoard();
-
-        Problem p = new Problem(board,
-                new DesastresSuccessorFunction(),
-                new DesastresGoalTest(),
-                new DesastresHeuristicFunction());
-
-        Search alg = new AStarSearch(new GraphSearch());
-        long t1 = System.nanoTime();
-        SearchAgent agent = new SearchAgent(p, alg);
-        long t2 = System.nanoTime();
-
-        System.out.println("A*");
-        printActions(agent.getActions());
-        printInstrumentation(agent.getInstrumentation());
-        System.out.println("Running time: " + (t2 - t1) + "ns");
-        System.out.println();
-
-
-        alg = new IterativeDeepeningAStarSearch();
-        long t3 = System.nanoTime();
-        agent = new SearchAgent(p, alg);
-        long t4 = System.nanoTime();
-
-        System.out.println("IDA*");
-        printActions(agent.getActions());
-        printInstrumentation(agent.getInstrumentation());
-        System.out.println("Running time: " + (t4 - t3) + "ns");
-        System.out.println();
     }
 
     private static void printInstrumentation(Properties properties) {
