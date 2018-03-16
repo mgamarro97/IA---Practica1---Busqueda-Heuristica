@@ -2,9 +2,16 @@ package IA.Desastres;
 
 public class DesastresBoard {
 
+    // Estructuda de datos que para cada helicoptero me guarde:
+    // - Salida
+    // - Grupo/s recogido/s
+    // - Tiempo
+
+    // Definir la solucion inicial en la creacion del Board con la estructura de datos definida arriba
+
+
     private Grupo[] grupos;
     private Centro[] centros;
-    private Helicoptero[][] coopters;
 
     public DesastresBoard(Grupos gs, Centros cs) {
         int lg = gs.size();
@@ -19,13 +26,6 @@ public class DesastresBoard {
         i = 0;
         for (Centro c : cs) {
             centros[i++] = new Centro(c.getCoordX(), c.getCoordY(), c.getNHelicopteros());
-        }
-
-        coopters = new Helicoptero[centros[0].getNHelicopteros()][lc];
-        for (i = 0; i < lc; ++i) {
-            for (int j = 0; j < centros[i].getNHelicopteros(); ++j) {
-                coopters[j][i] = new Helicoptero(centros[i].getCoordX(), centros[i].getCoordY());
-            }
         }
     }
 
