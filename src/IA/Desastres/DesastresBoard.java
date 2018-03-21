@@ -1,5 +1,7 @@
 package IA.Desastres;
 
+import java.util.ArrayList;
+
 public class DesastresBoard {
 
     // Estructuda de datos que para cada helicoptero me guarde:
@@ -13,7 +15,7 @@ public class DesastresBoard {
     private Grupo[] grupos;
     private boolean[] grupos_visitados;
     private Centro[] centros;
-    private DesastresHelicoptero[][] helicopteros;
+    private DesastresHelicoptero[][] helicopteros;      // helicopteros[i][j] i: id coopter, j: id centro
 
     public DesastresBoard(Grupos gs, Centros cs) {
         int lg = gs.size();
@@ -33,7 +35,22 @@ public class DesastresBoard {
         }
 
         helicopteros = new DesastresHelicoptero[centros[0].getNHelicopteros()][lc];
+        for (int a = 0; a < centros[0].getNHelicopteros(); ++a) {
+            for (int b = 0; b < lc; ++b) {
+                helicopteros[a][b] = new DesastresHelicoptero();
+            }
+        }
+
+        int j;
+        i = j = 0;
+        for (int g = 0; g < lg; ++g) {
+            ArrayList<Grupo> resc = new ArrayList<Grupo>();
+            resc.add(grupos[i]); // Grupo a rescatar
+
+        }
     }
+
+
 
     public Grupo getGrupo(int i) {
         return new Grupo(grupos[i].getCoordX(), grupos[i].getCoordY(), grupos[i].getNPersonas(), grupos[i].getPrioridad());
@@ -43,11 +60,11 @@ public class DesastresBoard {
         return new Centro(centros[i].getCoordX(), centros[i].getCoordY(), centros[i].getNHelicopteros());
     }
 
-    public double distGG(Grupo a, Grupo b) {
+    public double distGrupoGrupo(Grupo a, Grupo b) {
         return Math.sqrt(Math.pow(b.getCoordX() - a.getCoordX(), 2) + Math.pow(b.getCoordY() - a.getCoordY(), 2));
     }
 
-    public double distCG(Centro a, Grupo b) {
+    public double distCentroGrupo(Centro a, Grupo b) {
         return Math.sqrt(Math.pow(b.getCoordX() - a.getCoordX(), 2) + Math.pow(b.getCoordY() - a.getCoordY(), 2));
     }
 }

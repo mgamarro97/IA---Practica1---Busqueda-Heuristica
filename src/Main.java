@@ -11,8 +11,8 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Grupos grupos = new Grupos(10, 1234);
-        Centros centros = new Centros(5, 10, 1234);
+        Grupos grupos = new Grupos(10, 1916);
+        Centros centros = new Centros(5, 10, 1916);
 
         DesastresBoard board = new DesastresBoard(grupos, centros);
 
@@ -37,6 +37,7 @@ public class Main {
         hm.put(4, getHM(1, hm));
         hm.replace(4, "Estamos");
         printAll(hm);
+        System.out.println("Size: " + hm.size());
 
 
 
@@ -62,10 +63,12 @@ public class Main {
         Set sb = b.entrySet();
         Iterator ib = sb.iterator();
 
+        System.out.println("a: " + a.size());
         while (ia.hasNext()) {
             System.out.println(ia.next());
         }
         System.out.println();
+        System.out.println("b: " + b.size());
         while (ib.hasNext()) {
             System.out.println(ib.next());
         }
