@@ -12,42 +12,45 @@ public class DesastresBoard {
 
     // Definir la solucion inicial en la creacion del Board con la estructura de datos definida arriba
 
-
-    private Grupo[] grupos;
-    private boolean[] grupos_visitados;
-    private Centro[] centros;
-    private DesastresHelicoptero[][] helicopteros;      // helicopteros[i][j] i: id coopter, j: id centro
+    private static Centro[] centros;
+    private static Grupo[] grupos;
+    // rescates[i] es el rescate del grupo grupos[i]
+    // first: id helicoptero h (0 <= h < grupos.size()); second: viaje en el que ha sido rescatado
+    private PairInt[] rescates;
 
     public DesastresBoard(Grupos gs, Centros cs) {
-        int lg = gs.size();
         int lc = cs.size();
-        grupos = new Grupo[lg];
-        grupos_visitados = new boolean[lg];
+        int lg = gs.size();
         centros = new Centro[lc];
+        grupos = new Grupo[lg];
+        rescates = new PairInt[lc];
 
         int i = 0;
-        for (Grupo g : gs) {
-            grupos[i] = new Grupo(g.getCoordX(), g.getCoordY(), g.getNPersonas(), g.getPrioridad());
-            grupos_visitados[i++] = false;
-        }
-        i = 0;
         for (Centro c : cs) {
             centros[i++] = new Centro(c.getCoordX(), c.getCoordY(), c.getNHelicopteros());
         }
 
-        helicopteros = new DesastresHelicoptero[centros[0].getNHelicopteros()][lc];
-        for (int a = 0; a < centros[0].getNHelicopteros(); ++a) {
-            for (int b = 0; b < lc; ++b) {
-                helicopteros[a][b] = new DesastresHelicoptero();
-            }
+        i = 0;
+        for (Grupo g : gs) {
+            grupos[i++] = new Grupo(g.getCoordX(), g.getCoordY(), g.getNPersonas(), g.getPrioridad());
         }
 
-        int j;
-        i = j = 0;
-        for (int g = 0; g < lg; ++g) {
-            ArrayList<Grupo> resc = new ArrayList<Grupo>();
-            resc.add(grupos[i]); // Grupo a rescatar
-
+        int nHelicopteros = centros[0].getNHelicopteros();
+        int viaje = 1;
+        int h = 0;
+        int c = 0;
+        for (i = 0; i < lg; ++i) {
+            if (h == nHelicopteros) {
+                if (c == lc) {
+                    ++viaje;
+                    c = 0;
+                }
+                else {
+                    ++c;
+                }
+                h = 0;
+            }
+            rescates[i] = new PairInt(c * nHelicopteros + h, viaje);
         }
     }
 
