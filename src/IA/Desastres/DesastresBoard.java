@@ -52,7 +52,7 @@ public class DesastresBoard {
     }
 
     public DesastresBoard(DesastresBoard board) {
-        int n = board.getNumRescates();
+        int n = board.rescates.length;
         rescates = new PairInt[n];
         for (int i = 0; i < n; ++i) {
             rescates[i] = new PairInt(board.rescates[i]);
@@ -88,6 +88,7 @@ public class DesastresBoard {
                 sol[k] = i;
             }
         }
+        return sol;
     }
 }
 
