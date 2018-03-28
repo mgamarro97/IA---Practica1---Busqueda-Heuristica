@@ -85,7 +85,7 @@ public class DesastresBoard {
         int k = 0;
         for (int i = 0; i < rescates.length; ++i) {
             if (rescates[i].first == helicoptero && rescates[i].second == viaje) {
-                sol[k] = i;
+                sol[k++] = i;
             }
         }
         return sol;
