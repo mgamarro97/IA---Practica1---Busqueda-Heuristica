@@ -1,6 +1,5 @@
 package IA.Desastres;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DesastresBoard {
@@ -54,7 +53,17 @@ public class DesastresBoard {
         }
     }
 
+    public DesastresBoard(DesastresBoard board) {
+        int n = board.getNumRescates();
+        rescates = new PairInt[n];
+        for (int i = 0; i < n; ++i) {
+            rescates[i] = new PairInt(board.rescates[i]);
+        }
+    }
 
+    public int getNumRescates() {
+        return rescates.length;
+    }
 
     public Grupo getGrupo(int i) {
         return new Grupo(grupos[i].getCoordX(), grupos[i].getCoordY(), grupos[i].getNPersonas(), grupos[i].getPrioridad());
