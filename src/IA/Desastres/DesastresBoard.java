@@ -1,7 +1,5 @@
 package IA.Desastres;
 
-import java.util.HashMap;
-
 public class DesastresBoard {
 
     // Estructuda de datos que para cada helicoptero me guarde:
@@ -73,33 +71,23 @@ public class DesastresBoard {
         return new Centro(centros[i].getCoordX(), centros[i].getCoordY(), centros[i].getNHelicopteros());
     }
 
-    public double distGrupoGrupo(Grupo a, Grupo b) {
-        return Math.sqrt(Math.pow(b.getCoordX() - a.getCoordX(), 2) + Math.pow(b.getCoordY() - a.getCoordY(), 2));
+    public double distAB(int ax, int ay, int bx, int by) {
+        return Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
     }
 
-    public double distCentroGrupo(Centro a, Grupo b) {
-        return Math.sqrt(Math.pow(b.getCoordX() - a.getCoordX(), 2) + Math.pow(b.getCoordY() - a.getCoordY(), 2));
+    public double calculoTiempoMovimiento(int ax, int ay, int bx, int by) {
+        return distAB(ax, ay, bx, by) / 100;
     }
 
-    public double calculoTiempoViaje(Centro a, Grupo b) {
-        return distCentroGrupo(a, b) / 100;
-    }
-
-    public double calculoTiempoViaje(Grupo a, Grupo b) {
-        return distGrupoGrupo(a, b) / 100;
-    }
-
-    public double calculaTiempoViaje(HashMap<Integer, Grupo[]> viajes) {
-        double tiempo = 10 * (viajes.size() - 1);
-        for (int i = 0; i < viajes.size(); ++i) {
-            Grupo[] trip = viajes.get(i);
-            for (int j = 0; j < 3; ++j) {
-                if (trip[j] != null) {
-                    tiempo += trip[j].getNPersonas() * (3 - trip[j].getPrioridad());
-                }
+    public int[] getGruposRescatados(int helicoptero, int viaje) {
+        int[] sol = new int[3];
+        sol[0] = -1; sol[1] = -1; sol[2] = -1;
+        int k = 0;
+        for (int i = 0; i < rescates.length; ++i) {
+            if (rescates[i].first == helicoptero && rescates[i].second == viaje) {
+                sol[k] = i;
             }
         }
-        return tiempo;
     }
 }
 
