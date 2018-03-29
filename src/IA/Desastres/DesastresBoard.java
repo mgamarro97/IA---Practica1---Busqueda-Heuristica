@@ -62,6 +62,10 @@ public class DesastresBoard {
     public int getNumRescates() {
         return rescates.length;
     }
+    
+    public int getNumHelicopteros(){
+        return centros[0].getNHelicopteros()*centros.length;
+    }
 
     public Grupo getGrupo(int i) {
         return new Grupo(grupos[i].getCoordX(), grupos[i].getCoordY(), grupos[i].getNPersonas(), grupos[i].getPrioridad());
@@ -89,6 +93,19 @@ public class DesastresBoard {
             }
         }
         return sol;
+    }
+    //LOS OPERADORES VERSIÓN VIAJE ENTERO ESTÁN WIP
+    public void swapR(int grupo1, int grupo2) {
+        PairInt aux = new PairInt(rescates[grupo1]);
+        rescates[grupo1].setFirst(rescates[grupo2].first);
+        rescates[grupo1].setSecond(rescates[grupo2].second);
+        rescates[grupo2].setFirst(aux.first);
+        rescates[grupo2].setSecond(aux.second);
+    }
+    
+    public void setR(int grupo1, int grupo2) {
+        rescates[grupo2].setFirst(rescates[grupo1].first);
+        rescates[grupo2].setSecond(rescates[grupo1].second);
     }
 }
 
