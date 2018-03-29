@@ -121,17 +121,18 @@ public class DesastresBoard {
                 actual = centros[h/heliscenter]; //centro al que pertenece el helicoptero h
             }
 
-            int i = 0;
+            int i = 2;
             int[] rescued; //array de grupos rescatados por el helicoptero h en el viaje i
             rescued = getGruposRescatados(h, i);
             boolean next = rescued[0] == -1; //si rescued[0] es -1 entonces no existe el viaje
-            for (; !next; ++i) {
+            for (; !next; i++) {
                 Grupo gact = getGrupo(rescued[0]);
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(),actual.getCoordY(),gact.getCoordX(),gact.getCoordY()); //distancia entre el centro y el primer grupo
 
-                for (int j = 1; j < 3 && !next; j++) {
-                    next = rescued[j] != -1; //mirar si hay un grupo en la posicion j
-                    if (!next) {
+                boolean end = false;
+                for (int j = 1; j < 3 && !end; j++) {
+                    end = rescued[j] != -1; //mirar si hay un grupo en la posicion j
+                    if (!end) {
                         Grupo aux = getGrupo(rescued[j]);
                         heuristicValue += (gact.getPrioridad() == 1) ? gact.getNPersonas() * 2 : gact.getNPersonas();
                         heuristicValue += calculoTiempoMovimiento(gact.getCoordX(), gact.getCoordY(), aux.getCoordX(), aux.getCoordY()); //distancia entre los grupos a rescatar en el viaje
@@ -141,6 +142,7 @@ public class DesastresBoard {
 
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(),actual.getCoordY(),gact.getCoordX(),gact.getCoordY()); //distancia entre el centro del helicoptero y el ultimo grupo a rescatar
                 rescued = getGruposRescatados(h, i);
+                next = rescued[0] == -1;
             }
         }
     }
