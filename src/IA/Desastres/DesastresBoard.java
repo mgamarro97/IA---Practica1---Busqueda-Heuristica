@@ -76,6 +76,8 @@ public class DesastresBoard {
     public Centro getCentro(int i) {
         return new Centro(centros[i].getCoordX(), centros[i].getCoordY(), centros[i].getNHelicopteros());
     }
+    
+    public double getHeuristicValue(){ return heuristicValue; }
 
     public double distAB(int ax, int ay, int bx, int by) {
         return Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
