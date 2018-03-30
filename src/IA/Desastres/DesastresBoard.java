@@ -121,7 +121,8 @@ public class DesastresBoard {
         }
     }
 
-    public boolean setR(int grupo1, int grupo2) {
+     public boolean setR(int grupo1, int grupo2) {
+        if(getGruposRescatados(rescates[grupo1].first,rescates[grupo1].second).length == 3)return false;
         rescates[grupo2].setFirst(rescates[grupo1].first);
         rescates[grupo2].setSecond(rescates[grupo1].second);
         if(sucesorValido(rescates[grupo1], rescates[grupo2]))return true;
