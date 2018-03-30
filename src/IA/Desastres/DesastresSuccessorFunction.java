@@ -24,7 +24,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             for(int j = i+1; j<size;j++){
                 aux =  new DesastresBoard(b);
                 if(aux.swapR(i, j)) {
-                    String S = "Intercambiar rescates " + i + " y " + j;
+                    String S = "Swapear rescates " + i + " y " + j;
                     res.add(new Successor(S, aux));
                 }
             }
@@ -39,11 +39,11 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             for(int j = 0; j < viajesHelicoptero1.length; j++) {
 
                 for (int k = i + 1; k < nHelicopteros; k++) {    //HELICOPTERO 2
-                    int[] viajesHelicoptero2 = b.getViajesH(k);      //VIAJE DE H2 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
+                    int viajesHelicoptero2 = b.getViajesH(k);      //VIAJE DE H2 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
                     for (int l = 0; l < viajesHelicoptero2.length; l++) {
                         aux =  new DesastresBoard(b);
                         aux.swapV(i, j, k, l); //MODIFICAR MATRIZ DE VIAJES
-                        String S = "Juntar rescate " + i + " y rescate " + j;
+                        String S = "Swapear viajes " + i + " y " + j;
                         res.add(new Successor(S, aux));
                     }
                 }
@@ -57,7 +57,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             for(int j = i+1; j<size;j++){
                 aux =  new DesastresBoard(b);
                     if(aux.setR(i, j)){
-                        String S = "Juntar rescate " + i + " y rescate " + j;
+                        String S = "Set rescate " + i + " a rescate " + j;
                         res.add(new Successor(S, aux));
                 }
             }
@@ -70,7 +70,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
                 aux =  new DesastresBoard(b);
                 aux.setV(i,j);//MODIFICAR MATRIZ DE VIAJES
-                String S = "Juntar rescate " + i + " y rescate " + j;
+                String S = "Set viaje " + i + " a rescate " + j;
                 res.add(new Successor(S, aux));
             }
         }
