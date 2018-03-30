@@ -1,5 +1,4 @@
 package IA.Desastres;
-
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 
@@ -55,13 +54,11 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
     private void setRescate(DesastresBoard b, ArrayList res, int size){
         DesastresBoard aux;
         for(int i = 0; i<size;i++){
-            for(int j = 0; j<size;j++) {
+            for(int j = i+1; j<size;j++){
                 aux =  new DesastresBoard(b);
-                if(comprobar si hijo cumple las condiciones de tamaño y numero && i!=j){
-                    if(aux.setR(i, j)) {
+                    if(aux.setR(i, j)){
                         String S = "Juntar rescate " + i + " y rescate " + j;
                         res.add(new Successor(S, aux));
-                    }
                 }
             }
         }
