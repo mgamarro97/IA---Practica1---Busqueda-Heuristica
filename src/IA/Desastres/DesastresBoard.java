@@ -68,6 +68,16 @@ public class DesastresBoard {
     public int getNumHelicopteros(){
         return centros[0].getNHelicopteros()*centros.length;
     }
+    
+    public int getNumViajes(int h){
+        int v = 0;
+        for (int i = 0; i < rescates.length; ++i){
+            if (rescates[i].first == h && rescates[i].second > v) {
+                v = rescates[i].second;
+            }
+        }
+        return v;
+    }
 
     public Grupo getGrupo(int i) {
         return new Grupo(grupos[i].getCoordX(), grupos[i].getCoordY(), grupos[i].getNPersonas(), grupos[i].getPrioridad());
