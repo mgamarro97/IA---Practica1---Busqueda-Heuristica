@@ -11,6 +11,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         ArrayList res = new ArrayList();
         DesastresBoard board = (DesastresBoard)o;
         int size = board.getNumRescates();
+
         swapRescates(board, res, size);
         swapViajes(board, res);
         setRescate(board, res, size);
@@ -35,11 +36,11 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         DesastresBoard aux;
         int nHelicopteros = b.getNumHelicopteros();
         for (int i = 0; i < nHelicopteros; i++){          //HELICOPTERO 1
-            int viajesHelicoptero1 = b.getViajesH(i);  //VIAJE DE H1 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
+            int viajesHelicoptero1 = b.getNumViajes(i);  //VIAJE DE H1 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
             for(int j = 0; j < viajesHelicoptero1; j++) {
 
                 for (int k = i + 1; k < nHelicopteros; k++) {    //HELICOPTERO 2
-                    int viajesHelicoptero2 = b.getViajesH(k);      //VIAJE DE H2 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
+                    int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
                     for (int l = 0; l < viajesHelicoptero2; l++) {
                         aux =  new DesastresBoard(b);
                         aux.swapV(i, j, k, l); //MODIFICAR MATRIZ DE VIAJES
@@ -53,8 +54,8 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
 
     private void setRescate(DesastresBoard b, ArrayList res, int size){
         DesastresBoard aux;
-        for(int i = 0; i<size;i++){
-            for(int j = i+1; j<size;j++){
+        for(int i = 0; i < b.getNumHelicopteros(); i++) {
+            for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
                 aux =  new DesastresBoard(b);
                 if(aux.setR(i, j)){
                     String S = "Set rescate " + i + " a rescate " + j;
@@ -69,9 +70,10 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         for(int i = 0; i < b.getNumHelicopteros(); i++) {
             for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
                 aux =  new DesastresBoard(b);
-                aux.setV(i,j);//MODIFICAR MATRIZ DE VIAJES
-                String S = "Set viaje " + i + " a rescate " + j;
-                res.add(new Successor(S, aux));
+                if(aux.setV(i,j)) {//MODIFICAR MATRIZ DE VIAJES
+                    String S = "Set viaje " + i + " a rescate " + j;
+                    res.add(new Successor(S, aux));
+                }
             }
         }
     }
