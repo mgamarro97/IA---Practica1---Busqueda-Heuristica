@@ -16,9 +16,9 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         setRescate(board, res, size);
         setViaje(board,res);
         return res;
-      }
+    }
 
-      private void swapRescates(DesastresBoard b, ArrayList res, int size){
+    private void swapRescates(DesastresBoard b, ArrayList res, int size){
         DesastresBoard aux;
         for(int i = 0; i<size;i++){
             for(int j = i+1; j<size;j++){
@@ -35,12 +35,12 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         DesastresBoard aux;
         int nHelicopteros = b.getNumHelicopteros();
         for (int i = 0; i < nHelicopteros; i++){          //HELICOPTERO 1
-            int[] viajesHelicoptero1 = b.getViajesH(i);  //VIAJE DE H1 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
-            for(int j = 0; j < viajesHelicoptero1.length; j++) {
+            int viajesHelicoptero1 = b.getViajesH(i);  //VIAJE DE H1 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
+            for(int j = 0; j < viajesHelicoptero1; j++) {
 
                 for (int k = i + 1; k < nHelicopteros; k++) {    //HELICOPTERO 2
                     int viajesHelicoptero2 = b.getViajesH(k);      //VIAJE DE H2 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
-                    for (int l = 0; l < viajesHelicoptero2.length; l++) {
+                    for (int l = 0; l < viajesHelicoptero2; l++) {
                         aux =  new DesastresBoard(b);
                         aux.swapV(i, j, k, l); //MODIFICAR MATRIZ DE VIAJES
                         String S = "Swapear viajes " + i + " y " + j;
@@ -56,9 +56,9 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         for(int i = 0; i<size;i++){
             for(int j = i+1; j<size;j++){
                 aux =  new DesastresBoard(b);
-                    if(aux.setR(i, j)){
-                        String S = "Set rescate " + i + " a rescate " + j;
-                        res.add(new Successor(S, aux));
+                if(aux.setR(i, j)){
+                    String S = "Set rescate " + i + " a rescate " + j;
+                    res.add(new Successor(S, aux));
                 }
             }
         }
