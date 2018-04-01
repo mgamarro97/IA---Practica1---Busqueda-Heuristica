@@ -205,5 +205,15 @@ public class DesastresBoard {
             }
         }
     }
+    
+    public int getViajesH(int h) {
+        int ultimoViaje = 1;
+        for (int i = 0; i < rescates.length; ++i) {
+            if (rescates[i].first == h && rescates[i].second > ultimoViaje) {
+                ultimoViaje = rescates[i].second;
+            }
+        }
+        return ultimoViaje;
+    }
 }
 
