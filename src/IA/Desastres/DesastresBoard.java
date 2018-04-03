@@ -1,17 +1,12 @@
 package IA.Desastres;
 public class DesastresBoard {
 
-    // Estructuda de datos que para cada helicoptero me guarde:
-    // - Salida
-    // - Grupo/s recogido/s
-    // - Tiempo
-
     // Definir la solucion inicial en la creacion del Board con la estructura de datos definida arriba
 
     private static Centro[] centros;
     private static Grupo[] grupos;
     // rescates[i] es el rescate del grupo grupos[i]
-    // first: id helicoptero h (0 <= h < grupos.size()); second: viaje en el que ha sido rescatado
+    // first: id helicoptero h (#centros * #helicopteros/centro); second: viaje en el que ha sido rescatado
     private PairInt[] rescates;
 
     public double heuristicValue;
