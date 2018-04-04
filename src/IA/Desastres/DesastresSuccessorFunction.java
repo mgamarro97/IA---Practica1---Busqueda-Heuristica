@@ -14,7 +14,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
 
         swapRescates(board, res, size);
         swapViajes(board, res);
-        setRescate(board, res, size);
+        setRescate(board, res);
         setViaje(board,res);
         return res;
     }
@@ -52,7 +52,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         }
     }
 
-    private void setRescate(DesastresBoard b, ArrayList res, int size){
+    private void setRescate(DesastresBoard b, ArrayList res){
         DesastresBoard aux;
         for(int i = 0; i < b.getNumHelicopteros(); i++) {
             for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
