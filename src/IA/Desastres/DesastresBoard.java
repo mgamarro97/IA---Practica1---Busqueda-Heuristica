@@ -6,17 +6,19 @@ public class DesastresBoard {
     private static Centro[] centros;
     private static Grupo[] grupos;
     // rescates[i] es el rescate del grupo grupos[i]
-    // first: id helicoptero h (#centros * #helicopteros/centro); second: viaje en el que ha sido rescatado
+    // first: id helicoptero h (#centros * #helicopteros/centro) + nHelicoptero; second: viaje en el que ha sido rescatado
     private PairInt[] rescates;
+    private static boolean HEURISTICO;             // true: heuristico chulo; false: heuristico ez
 
     public double heuristicValue;
 
-    public DesastresBoard(Grupos gs, Centros cs) {
+    public DesastresBoard(Grupos gs, Centros cs, boolean heuristico) {
         int lc = cs.size();
         int lg = gs.size();
         centros = new Centro[lc];
         grupos = new Grupo[lg];
         rescates = new PairInt[lc];
+        HEURISTICO = heuristico;
 
         int i = 0;
         for (Centro c : cs) {
@@ -81,7 +83,14 @@ public class DesastresBoard {
         return new Centro(centros[i].getCoordX(), centros[i].getCoordY(), centros[i].getNHelicopteros());
     }
 
-    public double getHeuristicValue(){ return heuristicValue; }
+    public double getHeuristicValue() {
+        if (HEURISTICO) {
+            calculaHeuristic2();
+        } else {
+            calculaHeuristic();
+        }
+        return heuristicValue;
+    }
 
     public double distAB(int ax, int ay, int bx, int by) {
         return Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
@@ -89,6 +98,14 @@ public class DesastresBoard {
 
     public double calculoTiempoMovimiento(int ax, int ay, int bx, int by) {
         return distAB(ax, ay, bx, by) / 100;
+    }
+
+    public double calculoTiempoRescate(Grupo g) {
+        return (g.getNPersonas()) * (3 - g.getPrioridad());
+    }
+
+    public double calculoTiempoRescate(Grupo g, int v) {
+        return (g.getNPersonas()) * (3 - g.getPrioridad()) ^ v;
     }
 
     public int[] getGruposRescatados(int helicoptero, int viaje) {
@@ -132,13 +149,13 @@ public class DesastresBoard {
         int[] viaje2 = getGruposRescatados(h2,v2);
         if(viaje1[2] != -1)return false;     //QUE H1 NO ESTÉ LLENO YA
         if(viaje2[1] == -1 && v1 == 1);       //QUE H2 TENGA UN SÓLO VIAJE CON UN SÓLO RESCATE
-       
-       
+
+
         if(viaje1[1] == -1) {                   //COGER PRIMERA POSICION VACIA DE H1 Y H2(PENDIENTE)
             rescates[viaje2[1]].setFirst(h1);
             rescates[viaje2[1]].setSecond(v1);
         }
-            
+
         //--VIAJES DE H2 SI SE QUEDA VACÍO
         return true;
     }
@@ -172,7 +189,32 @@ public class DesastresBoard {
         return true;
     }
 
-    public void calculaHeuristic(){
+    public void calculaHeuristic() {
+
+        heuristicValue = 0;
+        int helisCenter = centros[0].getNHelicopteros();
+        boolean[] yaRescatados = new boolean[rescates.length];
+        for (int i = 0; i < yaRescatados.length; ++i) { yaRescatados[i] = false; }
+
+        for (int i = 0; i < rescates.length; ++i) {
+            if (!yaRescatados[i]) {
+                int[] rAct = getGruposRescatados(rescates[i].first, rescates[i].second);
+                for (int j = 0; j < rAct.length; ++j) {
+                    yaRescatados[rAct[j]] = true;
+                }
+                Centro act = centros[centros.length / helisCenter];
+                int k = 0;
+                heuristicValue += calculoTiempoMovimiento(act.getCoordX(), act.getCoordY(), grupos[rAct[k]].getCoordX(), grupos[rAct[k]].getCoordY());
+                heuristicValue += calculoTiempoRescate(grupos[rAct[k]]);
+                for (k = 1; k < rAct.length; ++k) {
+                    heuristicValue += calculoTiempoMovimiento(grupos[rAct[k-1]].getCoordX(), grupos[rAct[k-1]].getCoordY(), grupos[rAct[k]].getCoordX(), grupos[rAct[k]].getCoordY());
+                    heuristicValue += calculoTiempoRescate(grupos[rAct[k]]);
+                }
+                heuristicValue += calculoTiempoMovimiento(act.getCoordX(), act.getCoordY(), grupos[rAct[k]].getCoordX(), grupos[rAct[k]].getCoordY());
+            }
+        }
+
+        /*
         heuristicValue = 0;
         int heliscenter = centros[0].getNHelicopteros(); //helicopteros por centro
         int helis = centros.length*heliscenter; //helicopteros totales
@@ -208,6 +250,31 @@ public class DesastresBoard {
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(),actual.getCoordY(),gact.getCoordX(),gact.getCoordY());
                 rescued = getGruposRescatados(h, i);
                 next = rescued[0] != -1;
+            }
+        }*/
+    }
+
+    public void calculaHeuristic2() {
+        heuristicValue = 0;
+        int helisCenter = centros[0].getNHelicopteros();
+        boolean[] yaRescatados = new boolean[rescates.length];
+        for (int i = 0; i < yaRescatados.length; ++i) { yaRescatados[i] = false; }
+
+        for (int i = 0; i < rescates.length; ++i) {
+            if (!yaRescatados[i]) {
+                int[] rAct = getGruposRescatados(rescates[i].first, rescates[i].second);
+                for (int j = 0; j < rAct.length; ++j) {
+                    yaRescatados[rAct[j]] = true;
+                }
+                Centro act = centros[centros.length / helisCenter];
+                int k = 0;
+                heuristicValue += calculoTiempoMovimiento(act.getCoordX(), act.getCoordY(), grupos[rAct[k]].getCoordX(), grupos[rAct[k]].getCoordY());
+                heuristicValue += calculoTiempoRescate(grupos[rAct[k]], rescates[i].second);
+                for (k = 1; k < rAct.length; ++k) {
+                    heuristicValue += calculoTiempoMovimiento(grupos[rAct[k-1]].getCoordX(), grupos[rAct[k-1]].getCoordY(), grupos[rAct[k]].getCoordX(), grupos[rAct[k]].getCoordY());
+                    heuristicValue += calculoTiempoRescate(grupos[rAct[k]], rescates[i].second);
+                }
+                heuristicValue += calculoTiempoMovimiento(act.getCoordX(), act.getCoordY(), grupos[rAct[k]].getCoordX(), grupos[rAct[k]].getCoordY());
             }
         }
     }
