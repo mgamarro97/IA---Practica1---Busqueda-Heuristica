@@ -14,13 +14,13 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
         int size = board.getNumRescates();
         DesastresBoard aux;
 
-        ArrayList op1 = new ArrayList();
+        ArrayList <ArrayList> op1 = new ArrayList();
         swapRescates(board, op1, size);
-        ArrayList op2 = new ArrayList();
+        ArrayList <ArrayList> op2 = new ArrayList();
         swapViajes(board, op2);
-        ArrayList op3 = new ArrayList();
-        setRescate(board, op3, size);
-        ArrayList op4 = new ArrayList();
+        ArrayList <ArrayList> op3 = new ArrayList();
+        setRescate(board, op3);
+        ArrayList <ArrayList> op4 = new ArrayList();
         setViaje(board,op4);
         int n1,n2,n3,n4;
         int randOperador;
@@ -34,8 +34,8 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
             if(randOperador < n1){
                 //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
                 aux =  new DesastresBoard(board);
-                int i = op1.get(randOperador).get(0);
-                int j = op1.get(randOperador).get(1);
+                int i = (Integer) op1.get(randOperador).get(0);
+                int j = (Integer) op1.get(randOperador).get(1);
                 if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
                     res.add(new Successor("", aux));
                 }
@@ -44,10 +44,10 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
             if(randOperador < n1 + n2){
                 //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
                 aux =  new DesastresBoard(board);
-                int i = op2.get(randOperador-n1).get(0);
-                int j = op2.get(randOperador-n1).get(1);
-                int k = op2.get(randOperador-n1).get(2);
-                int l = op2.get(randOperador-n1).get(3);
+                int i = (Integer) op2.get(randOperador-n1).get(0);
+                int j = (Integer) op2.get(randOperador-n1).get(1);
+                int k = (Integer) op2.get(randOperador-n1).get(2);
+                int l = (Integer) op2.get(randOperador-n1).get(3);
                 if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
                     res.add(new Successor("", aux));
                 }
@@ -56,8 +56,8 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
             if(randOperador < n1 + n2 + n3){
                 //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
                 aux =  new DesastresBoard(board);
-                int i = op3.get(randOperador-n1-n2).get(0);
-                int j = op3.get(randOperador-n1-n2).get(1);
+                int i = (Integer) op3.get(randOperador-n1-n2).get(0);
+                int j = (Integer) op3.get(randOperador-n1-n2).get(1);
                 if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
                     res.add(new Successor("", aux));
                 }
@@ -66,8 +66,8 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
             else{                   //OPERADOR DENTRO DDE N4
                 //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
                 aux =  new DesastresBoard(board);
-                int i = op4.get(randOperador-n1-n2-n3).get(0);
-                int j = op4.get(randOperador-n1-n2-n3).get(1);
+                int i = (Integer) op4.get(randOperador-n1-n2-n3).get(0);
+                int j = (Integer) op4.get(randOperador-n1-n2-n3).get(1);
                 if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
                     res.add(new Successor("", aux));
                 }
@@ -112,7 +112,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
         }
     }
 
-    private void setRescate(DesastresBoard b, ArrayList res, int size){
+    private void setRescate(DesastresBoard b, ArrayList res){
         DesastresBoard aux;
         for(int i = 0; i < b.getNumHelicopteros(); i++) {
             for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
