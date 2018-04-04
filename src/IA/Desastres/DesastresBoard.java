@@ -119,6 +119,7 @@ public class DesastresBoard {
         }
         return sol;
     }
+    
     public boolean swapR(int grupo1, int grupo2) {
         PairInt aux = new PairInt(rescates[grupo1]);
         rescates[grupo1].setFirst(rescates[grupo2].first);
@@ -142,38 +143,25 @@ public class DesastresBoard {
         }
     }
 
-    public boolean setR(int h1, int h2) {
-        int v1 = getNumViajes(h1);
-        int v2 = getNumViajes(h2);
-        int[] viaje1 = getGruposRescatados(h1,v1);
-        int[] viaje2 = getGruposRescatados(h2,v2);
-        if(viaje1[2] != -1)return false;     //QUE H1 NO ESTÉ LLENO YA
-        if(viaje2[1] == -1 && v1 == 1);       //QUE H2 TENGA UN SÓLO VIAJE CON UN SÓLO RESCATE
-
-
-        if(viaje1[1] == -1) {                   //COGER PRIMERA POSICION VACIA DE H1 Y H2(PENDIENTE)
-            rescates[viaje2[1]].setFirst(h1);
-            rescates[viaje2[1]].setSecond(v1);
-        }
-
-        //--VIAJES DE H2 SI SE QUEDA VACÍO
+    public boolean setR(int h1, int v1, int h2, int v2, int grupo2) {
+        rescates[grupo2].setFirst(h1);
+        rescates[grupo2].setSecond(v1);
+        decrementaViaje(h2,v2);
         return true;
     }
 
-    public boolean setV(int h1, int h2){
-        int v1 = getNumViajes(h1);
-        int v2 = getNumViajes(h2);
+    public boolean setV(int h1, int v1, int h2, int v2){
         if(v2 == 1)return false;
         int viaje2[] = getGruposRescatados(h2,v2);
         for (int i = 0; i < 3; i++){
             rescates[viaje2[i]].setFirst(h1);
             rescates[viaje2[i]].setSecond(v1+1);
         }
-        //++VIAJES DE H1 Y --VIAJES DE H2
+        decrementaViaje(h2,);
         return true;
     }
 
-    public boolean sucesorValido(PairInt grupos1, PairInt grupos2){
+ private boolean sucesorValido(PairInt grupos1, PairInt grupos2){
         int viaje1[] = getGruposRescatados(grupos1.first, grupos1.second);
         int personas = 0;
         for (int i = 0; i < 3; i++){
@@ -187,6 +175,12 @@ public class DesastresBoard {
             if (personas>15) return false;
         }
         return true;
+    }
+
+    private void decrementaViaje(int h, int vBorrado){
+        for(int i = 0; i < rescates.length; i++){
+            if(rescates[i].first == h && rescates[i].second < vBorrado) rescates[i].second--;
+        }
     }
 
     public void calculaHeuristic() {
