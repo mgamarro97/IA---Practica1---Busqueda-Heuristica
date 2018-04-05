@@ -138,7 +138,7 @@ public class DesastresBoard {
             rescates[grupo1].setFirst(h2);
             rescates[grupo1].setSecond(v2);
         }
-        else if(grupo2 != -1) {
+        if(grupo2 != -1) {
             rescates[grupo2].setFirst(h1);
             rescates[grupo2].setSecond(v1);
         }
