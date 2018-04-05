@@ -11,92 +11,105 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
     public List getSuccessors(Object o) {
         DesastresBoard board = (DesastresBoard)o;
         ArrayList res = new ArrayList();
-        int size = board.getNumRescates();
         DesastresBoard aux;
 
         ArrayList <ArrayList> op1 = new ArrayList();
-        swapRescates(board, op1, size);
+        swapRescates(board, op1);
         ArrayList <ArrayList> op2 = new ArrayList();
         swapViajes(board, op2);
         ArrayList <ArrayList> op3 = new ArrayList();
-        setRescate(board, op3);
-        ArrayList <ArrayList> op4 = new ArrayList();
-        setViaje(board,op4);
-        int n1,n2,n3,n4;
+        setViaje(board,op3);
+        int n1,n2,n3;
         int randOperador;
         Random random = new Random();
-        while(/*COSAS DE CONDICIONES WIP*/){
-            n1 = op1.size();
-            n2 = op2.size();
-            n3 = op3.size();
-            n4 = op4.size();
-            randOperador = random.nextInt(n1+n2+n3+n4);
+        n1 = op1.size();
+        n2 = op2.size();
+        n3 = op3.size();
+         while(res.isEmpty() && n1+n2+n3 >1){
+            randOperador = random.nextInt(n1+n2+n3);
             if(randOperador < n1){
-                //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
                 aux =  new DesastresBoard(board);
                 int i = (Integer) op1.get(randOperador).get(0);
                 int j = (Integer) op1.get(randOperador).get(1);
-                if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
+                int k = (Integer) op1.get(randOperador).get(2);
+                int l = (Integer) op1.get(randOperador).get(3);
+                int grupo1 = (Integer) op1.get(randOperador).get(4);
+                int grupo2 = (Integer) op1.get(randOperador).get(5);
+                int borrar1 = (Integer) op1.get(randOperador).get(6);
+                int borrar2 = (Integer) op1.get(randOperador).get(7);
+                if(aux.swapR(i, j, k, l, grupo1, grupo2, borrar1, borrar2)){
                     res.add(new Successor("", aux));
                 }
                 op1.remove(randOperador);
+                n1 = op1.size();
             }
             if(randOperador < n1 + n2){
-                //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
                 aux =  new DesastresBoard(board);
                 int i = (Integer) op2.get(randOperador-n1).get(0);
                 int j = (Integer) op2.get(randOperador-n1).get(1);
                 int k = (Integer) op2.get(randOperador-n1).get(2);
                 int l = (Integer) op2.get(randOperador-n1).get(3);
-                if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
-                    res.add(new Successor("", aux));
-                }
+                aux.swapV(i,j,k,l);
+                res.add(new Successor("", aux));
                 op2.remove(randOperador);
+                n2 = op2.size();
             }
-            if(randOperador < n1 + n2 + n3){
-                //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
+            else{
                 aux =  new DesastresBoard(board);
                 int i = (Integer) op3.get(randOperador-n1-n2).get(0);
                 int j = (Integer) op3.get(randOperador-n1-n2).get(1);
-                if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
+                int k = (Integer) op3.get(randOperador-n1-n2).get(2);
+                int l = (Integer) op3.get(randOperador-n1-n2).get(3);
+                if(aux.setV(i,j,k,l)){
                     res.add(new Successor("", aux));
                 }
                 op3.remove(randOperador);
+                n3 = op3.size();
             }
-            else{                   //OPERADOR DENTRO DDE N4
-                //SACAR DE OP2, APLICAR OPERADOR Y BORRAR ELEMENTO DEL CONJUNTO DE SUCESORES
-                aux =  new DesastresBoard(board);
-                int i = (Integer) op4.get(randOperador-n1-n2-n3).get(0);
-                int j = (Integer) op4.get(randOperador-n1-n2-n3).get(1);
-                if(/*BOOLEAN PARA VALIDAR SUCESOR*/){
-                    res.add(new Successor("", aux));
-                }
-                op4.remove(randOperador);
-            }
-
         }
         return res;
     }
 
-    private void swapRescates(DesastresBoard b, ArrayList res, int size){
-        DesastresBoard aux;
-        for(int i = 0; i<size;i++){
-            for(int j = i+1; j<size;j++){
-                ArrayList<Integer> values = new ArrayList<>();
-                values.add(i);
-                values.add(j);
-                res.add(values);
+    private void swapRescates(DesastresBoard b, ArrayList res){
+        int borrar1 = 0, borrar2 = 0;
+        int nHelicopteros = b.getNumHelicopteros();
+        for (int i = 0; i < nHelicopteros; i++){          //HELICOPTERO 1
+            int viajesHelicoptero1 = b.getNumViajes(i);  //VIAJE DE H1
+            for(int j = 0; j < viajesHelicoptero1; j++) {
+
+                for (int k = i+1; k < nHelicopteros; k++) {    //HELICOPTERO 2
+                    int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2
+                    for (int l = 0; l < viajesHelicoptero2; l++) {
+                        int rescate1[] = b.getGruposRescatados(i,j);
+                        for(int r = 0; r < 3;r++){
+                            int rescate2[] = b.getGruposRescatados(k,l);
+                            for (int s = r; s < 3;s++){
+                                if(rescate1[r] == -1 && rescate2[s] == -1)break;
+                                if((rescate1[1] == -1 && rescate2[2] != -1) || (rescate1[1] == -1 && rescate2[1] != -1)) borrar1 = 1;
+                                else if((rescate2[1] == -1 && rescate1[2] != -1) || (rescate2[1] == -1 && rescate1[1] != -1)) borrar2 = 1;
+                                ArrayList<Integer> values = new ArrayList<>();
+                                values.add(i);
+                                values.add(j);
+                                values.add(k);
+                                values.add(l);
+                                values.add(rescate1[r]);
+                                values.add(rescate2[s]);
+                                values.add(borrar1);
+                                values.add(borrar2);
+                                res.add(values);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
     private void swapViajes(DesastresBoard b, ArrayList res){
-        DesastresBoard aux;
         int nHelicopteros = b.getNumHelicopteros();
         for (int i = 0; i < nHelicopteros; i++){          //HELICOPTERO 1
             int viajesHelicoptero1 = b.getNumViajes(i);  //VIAJE DE H1 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
             for(int j = 0; j < viajesHelicoptero1; j++) {
-
                 for (int k = i + 1; k < nHelicopteros; k++) {    //HELICOPTERO 2
                     int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2 / GETVIAJES ESTOY SUPONIENDO LO QUE HACE
                     for (int l = 0; l < viajesHelicoptero2; l++) {
@@ -112,26 +125,23 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
         }
     }
 
-    private void setRescate(DesastresBoard b, ArrayList res){
-        DesastresBoard aux;
-        for(int i = 0; i < b.getNumHelicopteros(); i++) {
-            for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
-                ArrayList<Integer> values = new ArrayList<>();
-                values.add(i);
-                values.add(j);
-                res.add(values);
-            }
-        }
-    }
-
     private void setViaje(DesastresBoard b, ArrayList res){
-        DesastresBoard aux;
-        for(int i = 0; i < b.getNumHelicopteros(); i++) {
-            for (int j = i + 1; j < b.getNumHelicopteros(); j++) {
-                ArrayList<Integer> values = new ArrayList<>();
-                values.add(i);
-                values.add(j);
-                res.add(values);
+        int nHelicopteros = b.getNumHelicopteros();
+        for (int i = 0; i < nHelicopteros; i++){          //HELICOPTERO 1
+            int viajesHelicoptero1 = b.getNumViajes(i);  //VIAJE DE H1
+            for(int j = 0; j < viajesHelicoptero1; j++) {
+
+                for (int k = i + 1; k < nHelicopteros; k++) {    //HELICOPTERO 2
+                    int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2
+                    for (int l = 0; l < viajesHelicoptero2; l++) {
+                        ArrayList<Integer> values = new ArrayList<>();
+                        values.add(i);
+                        values.add(j);
+                        values.add(k);
+                        values.add(l);
+                        res.add(values);
+                    }
+                }
             }
         }
     }
