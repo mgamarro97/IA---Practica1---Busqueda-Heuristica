@@ -120,7 +120,7 @@ public class DesastresBoard {
         return sol;
     }
     
-  public void swapV(int h1, int v1, int h2, int v2) {
+ public void swapV(int h1, int v1, int h2, int v2) {
         int viaje1[] = getGruposRescatados(h1,v1);
         int viaje2[] = getGruposRescatados(h2,v2);
         for (int i = 0; i < 3; i++){
@@ -133,7 +133,7 @@ public class DesastresBoard {
         }
     }
 
-    public boolean swapR(int h1, int v1, int h2, int v2,int grupo1, int grupo2) {
+    public boolean swapR(int h1, int v1, int h2, int v2, int grupo1, int grupo2, int borrar1, int borrar2) {
         if(grupo1 != -1) {
             rescates[grupo1].setFirst(h2);
             rescates[grupo1].setSecond(v2);
@@ -142,7 +142,9 @@ public class DesastresBoard {
             rescates[grupo2].setFirst(h1);
             rescates[grupo2].setSecond(v1);
         }
-        if(sucesorValido(rescates[grupo1], rescates[grupo2]))return true;
+        if (borrar1 == 1)decrementaViaje(h1,v1);
+        else if (borrar2 == 1)decrementaViaje(h2,v2);
+        if(sucesorValido(rescates[grupo1], rescates[grupo2])) return true;
         return false;
     }
 
@@ -175,7 +177,7 @@ public class DesastresBoard {
 
     private void decrementaViaje(int h, int vBorrado){
         for(int i = 0; i < rescates.length; i++){
-            if(rescates[i].first == h && rescates[i].second < vBorrado) rescates[i].second--;
+            if(rescates[i].first == h && rescates[i].second > vBorrado) rescates[i].second--;
         }
     }
 
