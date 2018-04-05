@@ -120,17 +120,7 @@ public class DesastresBoard {
         return sol;
     }
     
-    public boolean swapR(int grupo1, int grupo2) {
-        PairInt aux = new PairInt(rescates[grupo1]);
-        rescates[grupo1].setFirst(rescates[grupo2].first);
-        rescates[grupo1].setSecond(rescates[grupo2].second);
-        rescates[grupo2].setFirst(aux.first);
-        rescates[grupo2].setSecond(aux.second);
-        if(sucesorValido(rescates[grupo1], rescates[grupo2]))return true;
-        return false;
-    }
-
-    public void swapV(int h1, int v1, int h2, int v2) { //CAMBIAR ENTRADA POR DOS PAIRS
+  public void swapV(int h1, int v1, int h2, int v2) {
         int viaje1[] = getGruposRescatados(h1,v1);
         int viaje2[] = getGruposRescatados(h2,v2);
         for (int i = 0; i < 3; i++){
@@ -143,11 +133,17 @@ public class DesastresBoard {
         }
     }
 
-    public boolean setR(int h1, int v1, int h2, int v2, int grupo2) {
-        rescates[grupo2].setFirst(h1);
-        rescates[grupo2].setSecond(v1);
-        decrementaViaje(h2,v2);
-        return true;
+    public boolean swapR(int h1, int v1, int h2, int v2,int grupo1, int grupo2) {
+        if(grupo1 != -1) {
+            rescates[grupo1].setFirst(h2);
+            rescates[grupo1].setSecond(v2);
+        }
+        else if(grupo2 != -1) {
+            rescates[grupo2].setFirst(h1);
+            rescates[grupo2].setSecond(v1);
+        }
+        if(sucesorValido(rescates[grupo1], rescates[grupo2]))return true;
+        return false;
     }
 
     public boolean setV(int h1, int v1, int h2, int v2){
@@ -157,11 +153,11 @@ public class DesastresBoard {
             rescates[viaje2[i]].setFirst(h1);
             rescates[viaje2[i]].setSecond(v1+1);
         }
-        decrementaViaje(h2,);
+        decrementaViaje(h2,v2);
         return true;
     }
 
- private boolean sucesorValido(PairInt grupos1, PairInt grupos2){
+    private boolean sucesorValido(PairInt grupos1, PairInt grupos2){
         int viaje1[] = getGruposRescatados(grupos1.first, grupos1.second);
         int personas = 0;
         for (int i = 0; i < 3; i++){
@@ -169,7 +165,7 @@ public class DesastresBoard {
             if (personas>15) return false;
         }
         personas = 0;
-        int viaje2[] = getGruposRescatados(grupos2.first, grupos1.second);
+        int viaje2[] = getGruposRescatados(grupos2.first, grupos2.second);
         for (int i = 0; i < 3; i++){
             personas += grupos[viaje2[i]].getNPersonas();
             if (personas>15) return false;
