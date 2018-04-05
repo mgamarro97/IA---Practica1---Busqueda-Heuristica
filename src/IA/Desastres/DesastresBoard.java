@@ -222,14 +222,16 @@ public class DesastresBoard {
                 Grupo gact = getGrupo(rescued[0]);
                 //distancia entre el centro y el primer grupo
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(),actual.getCoordY(),gact.getCoordX(),gact.getCoordY());
-
+                //tiempo que tarda en rescatar a las personas del grupo 
+                heuristicValue += calculoTiempoRescate(gact);
+                
                 boolean end = false;
                 for (int j = 1; j < 3 && !end; j++) {
                     end = rescued[j] != -1; //mirar si hay un grupo en la posicion j
                     if (!end) {
                         Grupo aux = getGrupo(rescued[j]);
                         //tiempo en funcion de la prioridad y el número de personas a rescatar
-                        heuristicValue += calculoTiempoRescate(gact);
+                        heuristicValue += calculoTiempoRescate(aux);
                         //tiempo entre los grupos a rescatar en el viaje
                         heuristicValue += calculoTiempoMovimiento(gact.getCoordX(), gact.getCoordY(), aux.getCoordX(), aux.getCoordY());
                         gact = getGrupo(rescued[j]);
@@ -287,14 +289,16 @@ public class DesastresBoard {
                 Grupo gact = getGrupo(rescued[0]);
                 //distancia entre el centro y el primer grupo
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
-
+                //tiempo en rescatar a las personas del grupo actual
+                heuristicValue += calculoTiempoRescate(gact,i);
+                
                 boolean end = false;
                 for (int j = 1; j < 3 && !end; j++) {
                     end = rescued[j] != -1;
                     if (!end) {
                         Grupo aux = getGrupo(rescued[j]);
                         //tiempo en funcion de la prioridad y el número de personas a rescatar
-                        heuristicValue += calculoTiempoRescate(gact,i);
+                        heuristicValue += calculoTiempoRescate(aux,i);
                         //tiempo entre los grupos a rescatar en el viaje
                         heuristicValue += calculoTiempoMovimiento(gact.getCoordX(), gact.getCoordY(), aux.getCoordX(), aux.getCoordY());
                         gact = getGrupo(rescued[j]);
