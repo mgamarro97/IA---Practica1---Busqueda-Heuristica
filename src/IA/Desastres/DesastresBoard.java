@@ -17,7 +17,7 @@ public class DesastresBoard {
         int lg = gs.size();
         centros = new Centro[lc];
         grupos = new Grupo[lg];
-        rescates = new PairInt[lc];
+        rescates = new PairInt[lg];
         HEURISTICO = heuristico;
 
         int i = 0;
