@@ -46,6 +46,7 @@ public class DesastresBoard {
                 h = 0;
             }
             rescates[i] = new PairInt(c * nHelicopteros + h, viaje);
+            ++h;
         }
     }
 
@@ -229,7 +230,7 @@ public class DesastresBoard {
                 
                 boolean end = false;
                 for (int j = 1; j < 3 && !end; j++) {
-                    end = rescued[j] != -1; //mirar si hay un grupo en la posicion j
+                    end = (rescued[j] == -1); //mirar si hay un grupo en la posicion j
                     if (!end) {
                         Grupo aux = getGrupo(rescued[j]);
                         //tiempo en funcion de la prioridad y el número de personas a rescatar
@@ -296,7 +297,7 @@ public class DesastresBoard {
                 
                 boolean end = false;
                 for (int j = 1; j < 3 && !end; j++) {
-                    end = rescued[j] != -1;
+                    end = (rescued[j] == -1);
                     if (!end) {
                         Grupo aux = getGrupo(rescued[j]);
                         //tiempo en funcion de la prioridad y el número de personas a rescatar
@@ -312,5 +313,14 @@ public class DesastresBoard {
                 next = rescued[0] != -1;
             }
         }
+    }
+    
+    @Override
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < rescates.length; ++i) {
+            s += String.valueOf(rescates[i].first + " " + rescates[i].second + "\n");
+        }
+        return s;
     }
 }
