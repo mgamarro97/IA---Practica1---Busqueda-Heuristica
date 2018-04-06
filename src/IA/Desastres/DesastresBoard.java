@@ -288,7 +288,7 @@ public class DesastresBoard {
             rescued = getGruposRescatados(h, 1);  //array de grupos rescatados por el helicoptero h en el viaje i
             boolean next = rescued[0] != -1;  //si rescued[0] es -1 entonces no existe el viaje
 
-            for (int i = 2; !next; i++) {
+            for (int i = 2; next; i++) {
                 Grupo gact = getGrupo(rescued[0]);
                 //distancia entre el centro y el primer grupo
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
