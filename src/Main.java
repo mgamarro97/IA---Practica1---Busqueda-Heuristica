@@ -10,8 +10,8 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Grupos grupos = new Grupos(10, 1916);
-        Centros centros = new Centros(5, 10, 1916);
+        Grupos grupos = new Grupos(10, 1234);
+        Centros centros = new Centros(5, 2, 1234);
 
         DesastresBoard board = new DesastresBoard(grupos, centros, false);
         /*
