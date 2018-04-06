@@ -109,7 +109,7 @@ public class DesastresBoard {
         return (g.getNPersonas()) * (3 - g.getPrioridad()) ^ v;
     }
 
-    public int[] getGruposRescatados(int helicoptero, int viaje) {
+   public int[] getGruposRescatados(int helicoptero, int viaje) {
         int[] sol = new int[3];
         sol[0] = -1; sol[1] = -1; sol[2] = -1;
         int k = 0;
@@ -120,17 +120,21 @@ public class DesastresBoard {
         }
         return sol;
     }
-    
- public void swapV(int h1, int v1, int h2, int v2) {
+
+    public void swapV(int h1, int v1, int h2, int v2) {
         int viaje1[] = getGruposRescatados(h1,v1);
         int viaje2[] = getGruposRescatados(h2,v2);
         for (int i = 0; i < 3; i++){
-            rescates[viaje2[i]].setFirst(h1);
-            rescates[viaje2[i]].setSecond(v1);
+            if(viaje2[i] != -1) {
+                rescates[viaje2[i]].setFirst(h1);
+                rescates[viaje2[i]].setSecond(v1);
+            }
         }
         for (int i = 0; i < 3; i++){
-            rescates[viaje1[i]].setFirst(h2);
-            rescates[viaje1[i]].setSecond(v2);
+            if(viaje1[i] != -1) {
+                rescates[viaje1[i]].setFirst(h2);
+                rescates[viaje1[i]].setSecond(v2);
+            }
         }
     }
 
@@ -138,40 +142,39 @@ public class DesastresBoard {
         if(grupo1 != -1) {
             rescates[grupo1].setFirst(h2);
             rescates[grupo1].setSecond(v2);
+            if(!sucesorValido(rescates[grupo1]))return false;
         }
         if(grupo2 != -1) {
             rescates[grupo2].setFirst(h1);
             rescates[grupo2].setSecond(v1);
+            if(sucesorValido(rescates[grupo2])) return false;
         }
         if (borrar1 == 1)decrementaViaje(h1,v1);
         else if (borrar2 == 1)decrementaViaje(h2,v2);
-        if(sucesorValido(rescates[grupo1], rescates[grupo2])) return true;
-        return false;
+        return true;
     }
 
     public boolean setV(int h1, int v1, int h2, int v2){
         if(v2 == 1)return false;
         int viaje2[] = getGruposRescatados(h2,v2);
         for (int i = 0; i < 3; i++){
-            rescates[viaje2[i]].setFirst(h1);
-            rescates[viaje2[i]].setSecond(v1+1);
+            if (viaje2[i] != -1) {
+                rescates[viaje2[i]].setFirst(h1);
+                rescates[viaje2[i]].setSecond(v1 + 1);
+            }
         }
         decrementaViaje(h2,v2);
         return true;
     }
 
-    private boolean sucesorValido(PairInt grupos1, PairInt grupos2){
-        int viaje1[] = getGruposRescatados(grupos1.first, grupos1.second);
+    private boolean sucesorValido(PairInt grupo){
+        int viaje[] = getGruposRescatados(grupo.first, grupo.second);
         int personas = 0;
         for (int i = 0; i < 3; i++){
-            personas += grupos[viaje1[i]].getNPersonas();
-            if (personas>15) return false;
-        }
-        personas = 0;
-        int viaje2[] = getGruposRescatados(grupos2.first, grupos2.second);
-        for (int i = 0; i < 3; i++){
-            personas += grupos[viaje2[i]].getNPersonas();
-            if (personas>15) return false;
+            if(viaje[i] != -1) {
+                personas += grupos[viaje[i]].getNPersonas();
+                if (personas > 15) return false;
+            }
         }
         return true;
     }
