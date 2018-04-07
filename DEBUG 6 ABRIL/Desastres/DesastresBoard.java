@@ -106,7 +106,7 @@ public class DesastresBoard {
     }
 
     public double calculoTiempoMovimiento(int ax, int ay, int bx, int by) {
-        return distAB(ax, ay, bx, by) / 100;
+        return (distAB(ax, ay, bx, by) / 100)*60;
     }
 
     public double calculoTiempoRescate(Grupo g) {
@@ -162,7 +162,7 @@ public class DesastresBoard {
 
 
     //ESTO ES PUTA MIERDA
-    /*public boolean swapR(int h1, int v1, int h2, int v2, int grupo1, int grupo2, int borrar1, int borrar2) {
+    public boolean swapR(int h1, int v1, int h2, int v2, int grupo1, int grupo2, int borrar1, int borrar2) {
         if(grupo1 != -1) {
             rescates[grupo1].setFirst(h2);
             rescates[grupo1].setSecond(v2);
@@ -177,7 +177,7 @@ public class DesastresBoard {
         if(grupo1 != -1 && !sucesorValido(rescates[grupo1]))return false;
         if(grupo2 != -1 && !sucesorValido(rescates[grupo2]))return false;
         return true;
-    }*/
+    }
 
     public boolean setV(int h1, int v1, int h2, int v2){
         if(v2 == 1)return false;
@@ -211,7 +211,7 @@ public class DesastresBoard {
     }
 
     public void calculaHeuristic() {
-        /*
+        /*ç
         heuristicValue = 0;
         int helisCenter = centros[0].getNHelicopteros();
         boolean[] yaRescatados = new boolean[rescates.length];
@@ -273,9 +273,10 @@ public class DesastresBoard {
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(),actual.getCoordY(),gact.getCoordX(),gact.getCoordY());
                 rescued = getGruposRescatados(h, i);
                 next = rescued[0] != -1;
+                if (next){ heuristicValue += 10; } //tiempo de espera para volver a hacer un viaje
             }
         }
-       // System.out.println(heuristicValue);
+        System.out.println(heuristicValue);
     }
 
     public void calculaHeuristic2() {
@@ -339,8 +340,10 @@ public class DesastresBoard {
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
                 rescued = getGruposRescatados(h, i);
                 next = rescued[0] != -1;
+                if (next){ heuristicValue += 10; } //tiempo de espera para volver a hacer un viaje
             }
         }
+        System.out.print(heuristicValue);
     }
     @Override
     public String toString() {
