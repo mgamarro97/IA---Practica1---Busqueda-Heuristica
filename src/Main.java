@@ -51,7 +51,7 @@ public class Main {
             System.out.println("\nSimulated Annealing");
             long timeInit = System.currentTimeMillis();
             Problem problem = new Problem(board, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunction());
-            Search search = new SimulatedAnnealingSearch();
+            Search search = new SimulatedAnnealingSearch(90000,100,25,0.01);
             SearchAgent agent = new SearchAgent(problem, search);
             long timeFin = System.currentTimeMillis();
             printActions(agent.getActions());
