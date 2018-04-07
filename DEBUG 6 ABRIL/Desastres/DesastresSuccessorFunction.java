@@ -11,7 +11,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
     public List getSuccessors(Object o) {
         ArrayList res = new ArrayList();
         DesastresBoard board = (DesastresBoard)o;
-        swapRescates(board, res);
+        setRescate(board, res);
         System.out.println(res.size());
         swapViajes(board, res);
         System.out.println(res.size());
@@ -20,7 +20,24 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         return res;
     }
 
-    private void swapRescates(DesastresBoard b, ArrayList res){
+    private void setRescate(DesastresBoard b, ArrayList res){
+        DesastresBoard aux;
+        int nRescates = b.getNumRescates();
+        for(int i = 0; i < nRescates; i++){
+            for(int j = 0; j < nRescates; j++){
+                if(i != j){
+                    aux =  new DesastresBoard(b);
+                    if(aux.setR(i, j)) {
+                        String S = "Pasar grupo " + i + " a rescate del grupo " + j;
+                        res.add(new Successor(S, aux));
+                        System.out.println(i + " " +j);
+                    }
+                }
+            }
+        }
+    }
+
+   /* private void swapRescates(DesastresBoard b, ArrayList res){
         DesastresBoard aux;
         int borrar1 = 0, borrar2 = 0;
         int nHelicopteros = b.getNumHelicopteros();
@@ -54,7 +71,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             }
         }
         System.out.println(cont + " " + nHelicopteros);
-    }
+    }*/
 
     private void swapViajes(DesastresBoard b, ArrayList res){
         DesastresBoard aux;
