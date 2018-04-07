@@ -117,6 +117,10 @@ public class DesastresBoard {
     public double calculoTiempoRescate(Grupo g, int v) {
         return (g.getNPersonas()) * (3 - g.getPrioridad()) ^ v;
     }
+    
+    public double getTime(){
+        return time;
+    }
 
     public int[] getGruposRescatados(int helicoptero, int viaje) {
         int[] sol = new int[3];
