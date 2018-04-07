@@ -17,6 +17,7 @@ public class DesastresBoard {
     private static boolean HEURISTICO;             // true: heuristico chulo; false: heuristico ez
 
     public double heuristicValue;
+    public double time;
 
     public DesastresBoard(Grupos gs, Centros cs, boolean heuristico) {
         int lc = cs.size();
@@ -271,6 +272,7 @@ public class DesastresBoard {
             }
         }
         System.out.println(heuristicValue);
+        time = heuristicValue;
     }
 
     public void calculaHeuristic2() {
@@ -315,8 +317,10 @@ public class DesastresBoard {
                 Grupo gact = getGrupo(rescued[0]);
                 //distancia entre el centro y el primer grupo
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
+                time += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
                 //tiempo en rescatar a las personas del grupo actual
                 heuristicValue += calculoTiempoRescate(gact,i);
+                time += calculoTiempoRescate(gact,i);
 
                 boolean end = false;
                 for (int j = 1; j < 3 && !end; j++) {
@@ -325,16 +329,22 @@ public class DesastresBoard {
                         Grupo aux = getGrupo(rescued[j]);
                         //tiempo en funcion de la prioridad y el número de personas a rescatar
                         heuristicValue += calculoTiempoRescate(aux,i);
+                        time += calculoTiempoRescate(aux,i);
                         //tiempo entre los grupos a rescatar en el viaje
                         heuristicValue += calculoTiempoMovimiento(gact.getCoordX(), gact.getCoordY(), aux.getCoordX(), aux.getCoordY());
+                        time += calculoTiempoMovimiento(gact.getCoordX(), gact.getCoordY(), aux.getCoordX(), aux.getCoordY());
                         gact = getGrupo(rescued[j]);
                     }
                 }
                 //tiempo entre el centro del helicoptero y el ultimo grupo a rescatar
                 heuristicValue += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
+                time += calculoTiempoMovimiento(actual.getCoordX(), actual.getCoordY(), gact.getCoordX(), gact.getCoordY());
                 rescued = getGruposRescatados(h, i);
                 next = rescued[0] != -1;
-                if (next){ heuristicValue += 10; } //tiempo de espera para volver a hacer un viaje
+                if (next){ 
+                    heuristicValue += 10; 
+                    time += 10;
+                } //tiempo de espera para volver a hacer un viaje
             }
         }
         System.out.println(heuristicValue);
