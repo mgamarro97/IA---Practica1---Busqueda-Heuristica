@@ -16,7 +16,7 @@ public class Main {
         Grupos grupos = new Grupos(100, 1234);
         Centros centros = new Centros(5, 1, 1234);
 
-        DesastresBoard board = new DesastresBoard(grupos, centros, false);
+        DesastresBoard board = new DesastresBoard(grupos, centros, true);
         /*
         System.out.println("Grupos:");
         for (int i = 0; i < grupos.size(); ++i) {
@@ -28,8 +28,8 @@ public class Main {
             System.out.println(board.getCentro(i).getCoordX() + " " +  board.getCentro(i).getCoordY() + " " + board.getCentro(i).getNHelicopteros());
         }*/
 
-        DesastresHC(board);
-        //DesastresSA(board);
+        //DesastresHC(board);
+        DesastresSA(board);
 
     }
 
@@ -73,10 +73,9 @@ public class Main {
             System.out.println(key + " : " + property);
         }
     }
-
     private static void printActions(List actions) {
-        for (int i = 0; i < actions.size(); ++i) {
-            String action = (String) actions.get(i);
+        for (int i = 0; i < actions.size(); i++) {
+            String action = (String) actions.get(i).toString();
             System.out.println(action);
         }
     }
