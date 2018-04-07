@@ -147,9 +147,9 @@ public class DesastresBoard {
     }
 
     public boolean setR(int i, int j){
-
         PairInt grupoI = new PairInt(rescates[i]);
         PairInt grupoJ = new PairInt(rescates[j]);
+
         int viaje1[] = getGruposRescatados(grupoI.first,grupoI.second);
         int viaje2[] = getGruposRescatados(grupoJ.first,grupoJ.second);
         if (viaje2[2] != -1)return false;
@@ -160,22 +160,16 @@ public class DesastresBoard {
         return true;
     }
 
-
-    //ESTO ES PUTA MIERDA
-    public boolean swapR(int h1, int v1, int h2, int v2, int grupo1, int grupo2, int borrar1, int borrar2) {
-        if(grupo1 != -1) {
-            rescates[grupo1].setFirst(h2);
-            rescates[grupo1].setSecond(v2);
-
-        }
-        if(grupo2 != -1) {
-            rescates[grupo2].setFirst(h1);
-            rescates[grupo2].setSecond(v1);
-        }
-     //   if (borrar1 == 1)decrementaViaje(h1,v1);
-     //   else if (borrar2 == 1)decrementaViaje(h2,v2);
-        if(grupo1 != -1 && !sucesorValido(rescates[grupo1]))return false;
-        if(grupo2 != -1 && !sucesorValido(rescates[grupo2]))return false;
+    public boolean swapR(int i, int j){
+        PairInt grupoI = new PairInt(rescates[i]);
+        PairInt grupoJ = new PairInt(rescates[j]);
+        if(grupoI.first == grupoJ.first && grupoI.second == grupoJ.second)return false;
+        rescates[i].setFirst(grupoJ.first);
+        rescates[i].setSecond(grupoJ.second);
+        rescates[j].setFirst(grupoI.first);
+        rescates[j].setSecond(grupoI.second);
+        if(!sucesorValido(grupoJ))return false;
+        if(!sucesorValido(grupoI))return false;
         return true;
     }
 
@@ -343,7 +337,7 @@ public class DesastresBoard {
                 if (next){ heuristicValue += 10; } //tiempo de espera para volver a hacer un viaje
             }
         }
-        System.out.print(heuristicValue);
+        System.out.println(heuristicValue);
     }
     @Override
     public String toString() {

@@ -11,46 +11,44 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
     public List getSuccessors(Object o) {
         DesastresBoard board = (DesastresBoard)o;
         ArrayList res = new ArrayList();
-        DesastresBoard aux;
-
         ArrayList <ArrayList> op1 = new ArrayList();
         setRescate(board, op1);
         ArrayList <ArrayList> op2 = new ArrayList();
         swapViajes(board, op2);
         ArrayList <ArrayList> op3 = new ArrayList();
         setViaje(board,op3);
-        int n1,n2,n3;
+        ArrayList <ArrayList> op4 = new ArrayList();
+        swapRescates(board, op4);
+        int n1,n2,n3,n4;
         int randOperador;
         Random random = new Random();
         n1 = op1.size();
         n2 = op2.size();
         n3 = op3.size();
-         while(res.isEmpty() && n1+n2+n3 >1){
+        n4 = op4.size();
+        DesastresBoard aux =  new DesastresBoard(board);
+         while(res.isEmpty() && n1+n2+n3+n4 >1){
             randOperador = random.nextInt(n1+n2+n3);
             if(randOperador < n1){
-                aux =  new DesastresBoard(board);
                 int i = (Integer) op1.get(randOperador).get(0);
                 int j = (Integer) op1.get(randOperador).get(1);
                 if(aux.setR(i, j)){
-                    res.add(new Successor("", aux));
+                    res.add(new Successor("uterdj", aux));
                 }
                 op1.remove(randOperador);
                 n1 = op1.size();
             }
             else if(randOperador < n1 + n2){
-                aux =  new DesastresBoard(board);
                 int i = (Integer) op2.get(randOperador-n1).get(0);
                 int j = (Integer) op2.get(randOperador-n1).get(1);
                 int k = (Integer) op2.get(randOperador-n1).get(2);
                 int l = (Integer) op2.get(randOperador-n1).get(3);
                 aux.swapV(i,j,k,l);
                 res.add(new Successor("asfasgg", aux));
-                System.out.println(i + " " +j+" "+k+" "+l);
                 op2.remove(randOperador-n1);
                 n2 = op2.size();
             }
-            else{
-                aux =  new DesastresBoard(board);
+            else if(randOperador < n1 + n2 + n3){
                 int i = (Integer) op3.get(randOperador-n1-n2).get(0);
                 int j = (Integer) op3.get(randOperador-n1-n2).get(1);
                 int k = (Integer) op3.get(randOperador-n1-n2).get(2);
@@ -62,9 +60,17 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
                 op3.remove(randOperador-n2-n1);
                 n3 = op3.size();
             }
+            else{
+                int i = (Integer) op4.get(randOperador).get(0);
+                int j = (Integer) op4.get(randOperador).get(1);
+                if(aux.setR(i, j)){
+                    res.add(new Successor("uterdj", aux));
+                }
+                op4.remove(randOperador);
+                n4 = op4.size();
+            }
         }
-        System.out.println(res.size());
-        if(res.isEmpty())res.add(new Successor("avdvsvs",board));
+        if(res.isEmpty())res.add(new Successor("avdvsvs",aux));
         return res;
     }
 
@@ -81,6 +87,20 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
             }
         }
     }
+    private void swapRescates(DesastresBoard b, ArrayList res){
+        int nRescates = b.getNumRescates();
+        for(int i = 0; i < nRescates; i++){
+            for(int j = 0; j < nRescates; j++){
+                if(i != j){
+                    ArrayList<Integer> values = new ArrayList<>();
+                    values.add(i);
+                    values.add(j);
+                    res.add(values);
+                }
+            }
+        }
+    }
+
 
     private void swapViajes(DesastresBoard b, ArrayList res){
         int nHelicopteros = b.getNumHelicopteros();

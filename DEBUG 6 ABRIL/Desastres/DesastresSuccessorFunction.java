@@ -13,6 +13,8 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
         DesastresBoard board = (DesastresBoard)o;
         setRescate(board, res);
         System.out.println(res.size());
+        swapRescates(board, res);
+        System.out.println(res.size());
         swapViajes(board, res);
         System.out.println(res.size());
         setViaje(board,res);
@@ -21,6 +23,23 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
     }
 
     private void setRescate(DesastresBoard b, ArrayList res){
+        DesastresBoard aux;
+        int nRescates = b.getNumRescates();
+        for(int i = 0; i < nRescates; i++){
+            for(int j = 0; j < nRescates; j++){
+                if(i != j){
+                    aux =  new DesastresBoard(b);
+                    if(aux.swapR(i, j)) {
+                        String S = "Pasar grupo " + i + " a rescate del grupo " + j;
+                        res.add(new Successor(S, aux));
+                        System.out.println(i + " " +j);
+                    }
+                }
+            }
+        }
+    }
+
+    private void swapRescates(DesastresBoard b, ArrayList res){
         DesastresBoard aux;
         int nRescates = b.getNumRescates();
         for(int i = 0; i < nRescates; i++){
@@ -36,42 +55,6 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             }
         }
     }
-
-   /* private void swapRescates(DesastresBoard b, ArrayList res){
-        DesastresBoard aux;
-        int borrar1 = 0, borrar2 = 0;
-        int nHelicopteros = b.getNumHelicopteros();
-        int cont = 0;
-        for (int i = 0; i < nHelicopteros; i++){          //HELICOPTERO 1
-            int viajesHelicoptero1 = b.getNumViajes(i);  //VIAJE DE H1
-            for(int j = 1; j <= viajesHelicoptero1; j++) {
-
-                for (int k = i+1; k < nHelicopteros; k++) {    //HELICOPTERO 2
-                    int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2
-                    for (int l = 1; l <= viajesHelicoptero2; l++) {
-                        int rescate1[] = b.getGruposRescatados(i,j);
-                        for(int r = 0; r < 3;r++){
-                            int rescate2[] = b.getGruposRescatados(k,l);
-                            for (int s = 0; s < 3;s++){
-                                if(rescate1[r] == -1 && rescate2[s] == -1) break;
-                                aux =  new DesastresBoard(b);
-                                //System.out.println(i + " " +j+" "+r+" "+k+" "+l+" "+s);
-                                if(aux.swapR(i, j, k, l, rescate1[r], rescate2[s], borrar1, borrar2)) { ///MODIFICAR MATRIZ DE VIAJES
-                                    cont++;
-                                    String S = "Los helicopteros " + i + " y " + k + " cambian grupos número:" + r +
-                                            " y:" + s + " de los viajes " + (j) + " y " + (l);
-                                    res.add(new Successor(S, aux));
-                                }
-                                borrar1 = 0;
-                                borrar2 = 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        System.out.println(cont + " " + nHelicopteros);
-    }*/
 
     private void swapViajes(DesastresBoard b, ArrayList res){
         DesastresBoard aux;
