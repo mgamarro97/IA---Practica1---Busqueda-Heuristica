@@ -12,7 +12,7 @@ public class DesastresBoard {
 
     public double heuristicValue;
 
-    public DesastresBoard(Grupos gs, Centros cs, boolean heuristico) {
+    public DesastresBoard(Grupos gs, Centros cs, boolean heuristico, int initSol) {
         int lc = cs.size();
         int lg = gs.size();
         centros = new Centro[lc];
@@ -30,23 +30,22 @@ public class DesastresBoard {
             grupos[i++] = new Grupo(g.getCoordX(), g.getCoordY(), g.getNPersonas(), g.getPrioridad());
         }
 
-        int nHelicopteros = centros[0].getNHelicopteros();
-        int viaje = 1;
-        int h = 0;
-        int c = 0;
-        for (i = 0; i < lg; ++i) {
-            if (h == nHelicopteros) {
-                if (c == lc) {
-                    ++viaje;
-                    c = 0;
-                }
-                else {
-                    ++c;
-                }
-                h = 0;
-            }
-            rescates[i] = new PairInt(c * nHelicopteros + h, viaje);
-            ++h;
+        switch (initSol) {
+            case 0:
+                solucionMala();
+                // Un rescate por viaje
+                break;
+            case 1:
+                solucionRegular();
+                // Todos los rescates en el helicoptero 0 llenandolos al maximo
+                break;
+            case 2:
+                // Intentando llenar todos los viajes de todos los helicopteros
+                solucionAlgoMejorXD();
+                break;
+            default:
+                solucionMala();
+                break;
         }
     }
 
@@ -335,5 +334,90 @@ public class DesastresBoard {
             s += String.valueOf(rescates[i].first + " " + rescates[i].second + "\n");
         }
         return s;
+    }
+    
+    private void solucionMala() {
+        int nHelicopteros = centros[0].getNHelicopteros();
+        int viaje = 1;
+        int h = 0;
+        int c = 0;
+        int lc = centros.length;
+        int lg = grupos.length;
+        for (int i = 0; i < lg; ++i) {
+            if (h == nHelicopteros) {
+                if (c == lc-1) {
+                    ++viaje;
+                    c = 0;
+                }
+                else {
+                    ++c;
+                }
+                h = 0;
+            }
+            rescates[i] = new PairInt(c * nHelicopteros + h, viaje);
+            System.out.println(rescates[i].first+" "+rescates[i].second);
+            h++;
+        }
+    }
+
+    private void solucionRegular() {
+        int nHelicopteros = centros[0].getNHelicopteros();
+        int h = 0;
+        int c = 0;
+        int lc = centros.length;
+        int viaje = 1;
+        int lg = grupos.length;
+        int g = 0;
+        int np = 0;
+        for (int i = 0; i < lg; ++i) {
+            ++g;
+            np += grupos[i].getNPersonas();
+            if (g == 4) {
+                g = 1;
+                np = grupos[i].getNPersonas();
+                ++viaje;
+            }
+            else if (np > 15) {
+                g = 1;
+                np = grupos[i].getNPersonas();
+                ++viaje;
+            }
+            rescates[i] = new PairInt(0, viaje);
+        }
+    }
+
+    private void solucionAlgoMejorXD() {
+        int lg = grupos.length;
+        int g = 0;
+        int np = 0;
+        int h = 0;
+        int viaje = 1;
+        int c = 0;
+        int nHelicopteros = centros[0].getNHelicopteros();
+        int lc = centros.length;
+        for (int i = 0; i < lg; ++i) {
+            ++g;
+            np += grupos[i].getNPersonas();
+            if (g == 4) {
+                g = 1;
+                np = grupos[i].getNPersonas();
+                ++h;
+            } else if (np > 15) {
+                g = 1;
+                np = grupos[i].getNPersonas();
+                ++h;
+            }
+
+            if (h == nHelicopteros) {
+                if (c == lc - 1) {
+                    ++viaje;
+                    c = 0;
+                } else {
+                    ++c;
+                }
+                h = 0;
+            }
+            rescates[i] = new PairInt(c * nHelicopteros + h, viaje);
+        }
     }
 }
