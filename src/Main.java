@@ -13,7 +13,7 @@ public class Main {
         Grupos grupos = new Grupos(10, 1234);
         Centros centros = new Centros(5, 2, 1234);
 
-        DesastresBoard board = new DesastresBoard(grupos, centros, false);
+        DesastresBoard board = new DesastresBoard(grupos, centros, false, 0);
         /*
         System.out.println("Grupos:");
         for (int i = 0; i < grupos.size(); ++i) {
