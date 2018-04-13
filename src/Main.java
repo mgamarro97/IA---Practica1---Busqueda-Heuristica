@@ -1,19 +1,22 @@
-import IA.Desastres.*;
-import aima.search.framework.Problem;
-import aima.search.framework.Search;
-import aima.search.framework.SearchAgent;
-import aima.search.informed.HillClimbingSearch;
-import aima.search.informed.SimulatedAnnealingSearch;
-
-import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-        Grupos grupos = new Grupos(10, 1234);
-        Centros centros = new Centros(5, 2, 1234);
+    static int replicas = 10;
+    static long tExec = 0;
+    static double tRescates = 0;
+    static int seed = 0;
 
-        DesastresBoard board = new DesastresBoard(grupos, centros, false, 0);
+    public static void main(String[] args) throws Exception {
+        File out = new File("PRUEBACACA.txt");
+        PrintWriter writer = new PrintWriter(out);
+        Random random = new Random();
+        for(int i = 1; i <= replicas; i++) {
+            seed = random.nextInt(1500);
+            System.out.println("Prueba nº: " + i +" con semilla: " + seed);
+            Grupos grupos = new Grupos(100, seed);
+            Centros centros = new Centros(5, 1, seed);
+
+            DesastresBoard board = new DesastresBoard(grupos, centros, false);
         /*
         System.out.println("Grupos:");
         for (int i = 0; i < grupos.size(); ++i) {
@@ -25,9 +28,13 @@ public class Main {
             System.out.println(board.getCentro(i).getCoordX() + " " +  board.getCentro(i).getCoordY() + " " + board.getCentro(i).getNHelicopteros());
         }*/
 
-        DesastresHC(board);
-        //DesastresSA(board);
+            DesastresHC(board);
+            //DesastresSA(board);
 
+           writer.println(tExec + " " + tRescates);
+
+        }
+       writer.close();
     }
 
     private static void DesastresHC(DesastresBoard board) {
@@ -40,7 +47,12 @@ public class Main {
             long timeFin = System.currentTimeMillis();
             printActions(agent.getActions());
             printInstrumentation(agent.getInstrumentation());
-            System.out.println("Execution time: " + (timeFin - timeInit) + "ms");
+            DesastresBoard eFinal = (DesastresBoard)search.getGoalState();
+
+            tExec = timeFin-timeInit;
+            tRescates = eFinal.time;
+
+            System.out.println("Tiempo de ejecución:" + tExec + ". Tiempo en rescates: " + tRescates);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,10 +82,9 @@ public class Main {
             System.out.println(key + " : " + property);
         }
     }
-
     private static void printActions(List actions) {
-        for (int i = 0; i < actions.size(); ++i) {
-            String action = (String) actions.get(i);
+        for (int i = 0; i < actions.size(); i++) {
+            String action = (String) actions.get(i).toString();
             System.out.println(action);
         }
     }
