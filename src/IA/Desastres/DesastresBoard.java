@@ -11,6 +11,7 @@ public class DesastresBoard {
     private static boolean HEURISTICO;             // true: heuristico chulo; false: heuristico ez
 
     public double heuristicValue;
+    public double time;
 
     public DesastresBoard(Grupos gs, Centros cs, boolean heuristico, int initSol) {
         int lc = cs.size();
