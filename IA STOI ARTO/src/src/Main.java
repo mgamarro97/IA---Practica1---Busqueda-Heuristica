@@ -10,26 +10,25 @@ import aima.search.informed.SimulatedAnnealingSearch;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
 
-    static int replicas = 1;
+    static int replicas = 200;
     static long tExec = 0;
     static double tRescates = 0;
-    static int seed = 0;
+    //static int seed[] = {844,1955,251,1948,1658,1392,1499,932,258,1001,1631,1744,12,1138,681,1803,156,1896,558,1234};
 
     public static void main(String[] args) throws Exception {
-       // File out = new File("2setswapV.txt");
-       // PrintWriter writer = new PrintWriter(out);
-        Random random = new Random();
+        File out = new File("4opSolBuena200.txt");
+        PrintWriter writer = new PrintWriter(out);
         for(int i = 1; i <= replicas; i++) {
-           // seed = random.nextInt(1500);
-            System.out.println("Prueba nº: " + i +" con semilla: " + seed);
-            Grupos grupos = new Grupos(100, 1234);
-            Centros centros = new Centros(5, 1, 1234);
+            System.out.println("Prueba nº: " + i +" con semilla: " + i);
+            Grupos grupos = new Grupos(100, i);
+            Centros centros = new Centros(5, 1, i);
 
-            DesastresBoard board = new DesastresBoard(grupos, centros, false);
+            DesastresBoard board = new DesastresBoard(grupos, centros, false,2);
         /*
         System.out.println("Grupos:");
         for (int i = 0; i < grupos.size(); ++i) {
@@ -44,10 +43,10 @@ public class Main {
             DesastresHC(board);
             //DesastresSA(board);
 
-           // writer.println(tExec + " " + tRescates);
+            writer.println(tExec + " " + tRescates);
 
         }
-      //  writer.close();
+        writer.close();
     }
 
     private static void DesastresHC(DesastresBoard board) {
@@ -58,14 +57,14 @@ public class Main {
             Search search = new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(problem, search);
             long timeFin = System.currentTimeMillis();
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
+            //printActions(agent.getActions());
+            //printInstrumentation(agent.getInstrumentation());
             DesastresBoard eFinal = (DesastresBoard)search.getGoalState();
 
             tExec = timeFin-timeInit;
-            tRescates = eFinal.time;
+            tRescates = eFinal.getTime();
 
-            System.out.println("Tiempo de ejecución:" + tExec + ". Tiempo en rescates: " + tRescates);
+            System.out.println("Tiempo de ejecucion: " + tExec + " Tiempo en rescates: " + tRescates);
         } catch (Exception e) {
             e.printStackTrace();
         }
