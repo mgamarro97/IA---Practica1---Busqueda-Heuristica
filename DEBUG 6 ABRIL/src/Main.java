@@ -31,7 +31,7 @@ public class Main {
             System.out.println("Pueba nº: " + (i+1) + " con semilla: " + seed[i]);
             Grupos gs = new Grupos(grupos, seed[i]);
             Centros cs = new Centros(centros, helicopteros, seed[i]);
-            DesastresBoard board = new DesastresBoard(gs, cs, false, 1);
+            DesastresBoard board = new DesastresBoard(grupos, centros, false, 0, 4);
             DesastresHC(board);
             writer.println(tExec + " " + tRescates);
         }
