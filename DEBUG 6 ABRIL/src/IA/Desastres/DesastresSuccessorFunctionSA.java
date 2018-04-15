@@ -27,7 +27,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
         n4 = op4.size();
         DesastresBoard aux =  new DesastresBoard(board);
          while(res.isEmpty() && n1+n2+n3+n4 >1){
-            randOperador = random.nextInt(n1+n2+n3);
+            randOperador = random.nextInt(n1+n2+n3+n4);
             if(randOperador < n1){
                 int i = (Integer) op1.get(randOperador).get(0);
                 int j = (Integer) op1.get(randOperador).get(1);
@@ -54,18 +54,17 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
                 int l = (Integer) op3.get(randOperador-n1-n2).get(3);
                 if(aux.setV(i,j,k,l)){
                     res.add(new Successor( "Asignar viaje " + l + "de helicóptero " + k + " a helicoptero " + i, aux));
-                    System.out.println(i + " " +j+" "+k+" "+l);
                 }
                 op3.remove(randOperador-n2-n1);
                 n3 = op3.size();
             }
             else{
-                int i = (Integer) op4.get(randOperador).get(0);
-                int j = (Integer) op4.get(randOperador).get(1);
+                int i = (Integer) op4.get(randOperador-n1-n2-n3).get(0);
+                int j = (Integer) op4.get(randOperador-n1-n2-n3).get(1);
                 if(aux.swapR(i, j)){
                     res.add(new Successor("Cambiar valores de " + "grupo " + i + " por valores del grupo " + j, aux));
                 }
-                op4.remove(randOperador);
+                op4.remove(randOperador-n3-n2-n1);
                 n4 = op4.size();
             }
         }
