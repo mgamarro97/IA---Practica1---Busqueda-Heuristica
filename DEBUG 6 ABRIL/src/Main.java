@@ -18,6 +18,10 @@ public class Main {
     static int op = 0;
     static int algoritmo = 0;
     static int sol = 0;
+    static int steps = 10000;
+    static int stiter = 20;
+    static int k = 25;
+    static double lambda = 0.01;
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
@@ -48,7 +52,14 @@ public class Main {
         do{
             int value = scanner.nextInt();
             if(value == 0){algoritmo = 0;valido = true;}
-            else if(value == 1){algoritmo = 1;valido = true;}
+            else if(value == 1){
+                algoritmo = 1;valido = true;
+                System.out.println("Introduce steps, stitter, k y lambda para Simulated Annealing");
+                steps = scanner.nextInt();
+                stiter = scanner.nextInt();
+                k = scanner.nextInt();
+                lambda = scanner.nextDouble();
+            }
             else System.out.println("Error, número no válido");
         }while(valido == false);
         valido = false;
@@ -93,7 +104,7 @@ public class Main {
             System.out.println("Ejecución con algoritmo Simulated Annealing \n");
             long timeInit = System.currentTimeMillis();
             Problem problem = new Problem(board, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunction());
-            Search search = new SimulatedAnnealingSearch(75000,20,5,0.01);
+            Search search = new SimulatedAnnealingSearch(steps,stiter,k,lambda);
             SearchAgent agent = new SearchAgent(problem, search);
             long timeFin = System.currentTimeMillis();
             printActions(agent.getActions());
