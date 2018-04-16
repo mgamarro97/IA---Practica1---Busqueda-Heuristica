@@ -317,7 +317,7 @@ public class DesastresBoard {
                 int [] g = getGruposRescatados(i, j);
                 for (int k = 0; k < 3; ++k) {
                     if (g[k] == -1) break;
-                    s += " grupo " + g[k];
+                    s += "  grupo " + g[k];
                 }
                 s += "\n";
             }
