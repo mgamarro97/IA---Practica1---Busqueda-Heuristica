@@ -303,8 +303,25 @@ public class DesastresBoard {
     @Override
     public String toString() {
         String s = "";
+        int h = getNumHelicopteros();
+        int[] viajesHeli = new int[h];
+
         for (int i = 0; i < rescates.length; ++i) {
-            s += String.valueOf(rescates[i].first + " " + rescates[i].second + "\n");
+            if (viajesHeli[rescates[i].first] < rescates[i].second) viajesHeli[rescates[i].first] = rescates[i].second;
+        }
+
+        for (int i = 0; i < h; ++i) {
+            s += "h" + i + ":";
+            for (int j = 1; j < viajesHeli[i]; ++j) {
+                s += "\tv" + j + ":";
+                int [] g = getGruposRescatados(i, j);
+                for (int k = 0; k < 3; ++k) {
+                    if (g[k] == -1) break;
+                    s += " grupo " + g[k];
+                }
+                s += "\n";
+            }
+            s += "\n";
         }
         return s;
     }
