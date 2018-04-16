@@ -115,7 +115,8 @@ public class DesastresBoard {
     }
 
     public double calculoTiempoRescate(Grupo g, int v) {
-        return (g.getNPersonas()) * Math.pow((3 - g.getPrioridad()),v);
+        int ponderacion = 1;
+        return g.getNPersonas() * Math.pow(g.getPrioridad(),v*ponderacion);
     }
 
     public int[] getGruposRescatados(int helicoptero, int viaje) {
@@ -299,6 +300,7 @@ public class DesastresBoard {
                 } //tiempo de espera para volver a hacer un viaje
             }
         }
+        heuristicValue += time;
     }
     @Override
     public String toString() {
