@@ -246,7 +246,6 @@ public class DesastresBoard {
                 if (next){ heuristicValue += 10; } //tiempo de espera para volver a hacer un viaje
             }
         }
-        //System.out.println(heuristicValue);
         time = heuristicValue;
     }
 
