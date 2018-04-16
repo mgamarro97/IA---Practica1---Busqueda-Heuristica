@@ -11,7 +11,6 @@ import java.util.*;
 
 public class Main {
 
-    static int seed[] = {844,1955,251,1948,1658,1392,1499,932,258,1001,1631,1744,12,1138,681,1803,156,1896,558,1234};
     static int nGrupos = 100;
     static int nCentros = 5;
     static int nHelis = 1;
@@ -67,14 +66,13 @@ public class Main {
         Grupos grupos = new Grupos(nGrupos, seed);
         Centros centros = new Centros(nCentros, nHelis, seed);
         DesastresBoard board = new DesastresBoard(grupos, centros,heur,sol ,op);
-        System.out.println("Ejecución con seed " + seed);
         if(algoritmo == 0)DesastresHC(board);
         if(algoritmo == 1)DesastresSA(board);
     }
 
     private static void DesastresHC(DesastresBoard board) {
         try {
-            System.out.println("\nHill Climbing");
+            System.out.println("Ejecución con algoritmo Hill Climbing \n");
             long timeInit = System.currentTimeMillis();
             Problem problem = new Problem(board, new DesastresSuccessorFunction(), new DesastresGoalTest(), new DesastresHeuristicFunction());
             Search search = new HillClimbingSearch();
@@ -92,7 +90,7 @@ public class Main {
 
     private static void DesastresSA(DesastresBoard board) {
         try {
-            System.out.println("\nSimulated Annealing");
+            System.out.println("Ejecución con algoritmo Simulated Annealing \n");
             long timeInit = System.currentTimeMillis();
             Problem problem = new Problem(board, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunction());
             Search search = new SimulatedAnnealingSearch(75000,20,5,0.01);
