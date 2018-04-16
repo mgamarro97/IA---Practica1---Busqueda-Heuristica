@@ -98,7 +98,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
                 for (int k = 0; k < nHelicopteros; k++) {    //HELICOPTERO 2
                     int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2
                     for (int l = 1; l <= viajesHelicoptero2; l++) {
-                        if(i != k) {    //añadir viajesHelicoptero != 1
+                        if(i != k) {  
                             aux =  new DesastresBoard(b);
                             if(aux.setV(i, viajesHelicoptero1, k, l)) {
                                 String S = "Set viaje " + l + " a helicoptero " + i;
