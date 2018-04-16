@@ -1,13 +1,15 @@
-package IA.Desastres;
+package Desastres;
 
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DesastresSuccessorFunction implements SuccessorFunction {
 
     public List getSuccessors(Object o) {
+
         ArrayList res = new ArrayList();
         DesastresBoard board = (DesastresBoard)o;
         switch (board.getOperadores()) {
@@ -17,10 +19,11 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
                 break;
             case 2:
                 setRescate(board, res);
-                setViaje(board, res);
+                swapViajes(board, res);
                 break;
             case 3:
                 setViaje(board, res);
+                setRescate(board,res);
                 swapViajes(board, res);
                 break;
             case 4:
@@ -45,7 +48,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
                 if(i != j){
                     aux =  new DesastresBoard(b);
                     if(aux.setR(i, j)) {
-                        String S = "Pasar grupo " + i + " a viaje del grupo " + j;
+                        String S = "Pasar grupo " + i + " a rescate del grupo " + j;
                         res.add(new Successor(S, aux));
                     }
                 }
@@ -78,7 +81,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
                     for (int l = 1; l <= viajesHelicoptero2; l++) {
                         aux =  new DesastresBoard(b);
                         aux.swapV(i, j, k, l);
-                        String S = "Intercambiar viajes " + j + " y " + l + " de los helicópteros " + i + " y " + k;
+                        String S = "Swapear viajes " + j + " y " + l + " de los helicopteros " + i + " y " + k;
                         res.add(new Successor(S, aux));
                     }
                 }
@@ -95,10 +98,10 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
                 for (int k = 0; k < nHelicopteros; k++) {    //HELICOPTERO 2
                     int viajesHelicoptero2 = b.getNumViajes(k);      //VIAJE DE H2
                     for (int l = 1; l <= viajesHelicoptero2; l++) {
-                        if(i != k) {    
+                        if(i != k) {    //añadir viajesHelicoptero != 1
                             aux =  new DesastresBoard(b);
                             if(aux.setV(i, viajesHelicoptero1, k, l)) {
-                                String S = "Asignar viaje " + l + "de helicóptero " + k + " a helicoptero " + i;
+                                String S = "Set viaje " + l + " a helicoptero " + i;
                                 res.add(new Successor(S, aux));
                             }
                         }
